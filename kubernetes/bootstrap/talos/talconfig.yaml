@@ -56,6 +56,21 @@ nodes:
           - network: 0.0.0.0/0
             gateway: "192.168.30.1"
         mtu: 1500
+  - hostname: "veldora"
+    ipAddress: "192.168.30.202"
+    installDisk: "/dev/sdc"
+    talosImageURL: factory.talos.dev/installer/2d61dd07b20062062ea671b4d01873506103b67c0f7a4c3fb6cf4ee85585dcb8
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "50:65:f3:3a:39:b3"
+        dhcp: false
+        addresses:
+          - "192.168.30.202/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "192.168.30.1"
+        mtu: 1500
 
 # Global patches
 patches:
