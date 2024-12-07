@@ -59,7 +59,7 @@ nodes:
   - hostname: "veldora"
     ipAddress: "192.168.30.202"
     installDisk: "/dev/sdc"
-    talosImageURL: factory.talos.dev/installer/2d61dd07b20062062ea671b4d01873506103b67c0f7a4c3fb6cf4ee85585dcb8
+    talosImageURL: factory.talos.dev/installer/ca8c8db8c96f74f2fae888821401699afe3d78229131d0c418a7aa5329fcd1c9
     controlPlane: false
     networkInterfaces:
       - deviceSelector:
