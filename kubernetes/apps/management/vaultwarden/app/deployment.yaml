@@ -1,0 +1,83 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vaultwarden
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vaultwarden
+  template:
+    metadata:
+      labels:
+        app: vaultwarden
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      containers:
+      - name: vaultwarden
+        image: vaultwarden/server:1.31.0
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: vaultwarden
+        - secretRef:
+            name: vaultwarden-settings
+            optional: true
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 3012
+          name: http-websocket
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /data
+          name: data
+        resources:
+          limits:
+            cpu: 300m
+            memory: 1Gi
+          requests:
+            cpu: 50m
+            memory: 256Mi
+      - name: cloudflared
+        image: cloudflare/cloudflared:2024.6.1
+        command:
+        - cloudflared
+        - tunnel
+        # In a k8s environment, the metrics server needs to listen outside the pod it runs on.
+        # The address 0.0.0.0:2000 allows any pod in the namespace.
+        - --metrics
+        - 0.0.0.0:2000
+        - --no-autoupdate
+        - run
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+          # Cloudflared has a /ready endpoint which returns 200 if and only if
+          # it has an active connection to the edge.
+            path: /ready
+            port: 2000
+          failureThreshold: 1
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        env:
+          - name: TUNNEL_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: cloudflared-vaultwarden
+                key: tunnel-token
+      volumes:
+      - name: data
+        emptyDir:
+          sizeLimit: 500Mi

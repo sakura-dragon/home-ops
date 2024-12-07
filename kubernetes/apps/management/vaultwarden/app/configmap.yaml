@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vaultwarden
+data:
+  # Where to store persistent data
+  # Data is stored in postgres, so this is just for ephemeral storage
+  # Mostly used for rsa keys, TODO: generate them so we don't need persistence
+  DATA_FOLDER: '/data'
+  # As mentioned, we're enforcing persistence via the DB only
+  USER_ATTACHMENT_LIMIT: '0'
+  ORG_ATTACHMENT_LIMIT: '0'
+  # What domain is vaultwarden going to be hosted on
+  # This needs to reflect setting in ingress otherwise some 2FA methods might not work
+  # DOMAIN: 'https://vault.skylakemoon.com'
+  # Show password hint instead of sending it via email
+  SHOW_PASSWORD_HINT: 'false'
+  # Enable Vault interface, when disabled, only API is served
+  WEB_VAULT_ENABLED: 'true'
+  # Port to serve http requests on
+  # most likely no need to change this here, look at ingress configuration instead
+  ROCKET_PORT: '8080'
+  # Disallow registration of new users
+  SIGNUPS_ALLOWED: 'false'
+  # Allow current users invite new users even if registrations are otherwise disabled.
+  # https://github.com/dani-garcia/bitwarden_rs/blob/master/README.md#disable-invitations
+  INVITATIONS_ALLOWED: 'true'
+  # Because we're behind a cloudflared proxy
+  IP_HEADER: CF-Connecting-IP
