@@ -1,0 +1,3 @@
+---
+providerRegex: ^(pve-talos-0|pve-talos-1)$
+bypassDnsResolution: true
