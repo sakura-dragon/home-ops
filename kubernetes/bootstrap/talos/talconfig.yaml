@@ -24,53 +24,25 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: "pve-talos-0"
-    ipAddress: "192.168.30.200"
-    installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/8291c2081e69c39008c04770c95854bcbff98193f2919cbd7603c64c6d2c51dd
+  - hostname: "ramiris"
+    ipAddress: "192.168.30.11"
+    installDisk: "/dev/sdb"
+    machineSpec:
+      secureboot: true
+    talosImageURL: factory.talos.dev/installer-secureboot/103f946e0436b65d0b09403221377658c38af0f698c6fadc2917019b10822e20
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "bc:24:11:61:80:a0"
+          hardwareAddr: "50:65:f3:3a:39:b3"
         dhcp: false
         addresses:
-          - "192.168.30.200/24"
+          - "192.168.30.11/24"
         routes:
           - network: 0.0.0.0/0
             gateway: "192.168.30.1"
         mtu: 1500
         vip:
           ip: "192.168.30.10"
-  - hostname: "pve-talos-1"
-    ipAddress: "192.168.30.201"
-    installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/8291c2081e69c39008c04770c95854bcbff98193f2919cbd7603c64c6d2c51dd
-    controlPlane: false
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:e3:28:39"
-        dhcp: false
-        addresses:
-          - "192.168.30.201/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "192.168.30.1"
-        mtu: 1500
-  - hostname: "veldora"
-    ipAddress: "192.168.30.202"
-    installDisk: "/dev/sdc"
-    talosImageURL: factory.talos.dev/installer/ca8c8db8c96f74f2fae888821401699afe3d78229131d0c418a7aa5329fcd1c9
-    controlPlane: false
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "50:65:f3:3a:39:b3"
-        dhcp: false
-        addresses:
-          - "192.168.30.202/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "192.168.30.1"
-        mtu: 1500
 
 # Global patches
 patches:

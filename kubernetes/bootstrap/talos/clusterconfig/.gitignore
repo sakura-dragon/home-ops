@@ -1,4 +1,2 @@
-kube-home-pve-talos-0.yaml
-kube-home-pve-talos-1.yaml
 talosconfig
-kube-home-veldora.yaml
+kube-home-ramiris.yaml
